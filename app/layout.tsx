@@ -41,6 +41,9 @@ export default function RootLayout({
               formButtonPrimary: "primary-gradient",
               footerActionLink: "primary-text-gradient hover:text-primary-500",
             },
+            variables: {
+              colorPrimary: "#ff7000",
+            },
           }}
         >
           <ThemeProvider>{children}</ThemeProvider>
