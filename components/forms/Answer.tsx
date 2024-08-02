@@ -41,6 +41,8 @@ const Answer = ({ question, questionId, authorId }: Props) => {
   const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
     setIsSubmitting(true);
 
+    console.log(authorId);
+
     try {
       await createAnswer({
         content: values.answer,
@@ -131,7 +133,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
                       content_style:
                         "body { font-family:Inter; font-size:16px }",
                       skin: mode === "dark" ? "oxide-dark" : "oxide",
-                      content_css: mode === "dark" ? "dark" : "light",
+                      content_css: mode === "dark" ? "dark" : "default",
                     }}
                   />
                 </FormControl>
