@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SignedOut } from "@clerk/nextjs";
+import { SignedOut, useAuth } from "@clerk/nextjs";
 
 import {
   Sheet,
@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { sidebarLinks } from "@/constants/constants";
 
 const NavContent = () => {
+  const { userId, isSignedIn } = useAuth();
   const pathname = usePathname();
 
   return (
@@ -25,12 +26,15 @@ const NavContent = () => {
           (pathname.includes(item.route) && item.route.length > 1) ||
           pathname === item.route;
 
-        // TODO
+        const route =
+          item.route === "/profile" ? `${item.route}/${userId}` : item.route;
+
+        if (item.route === "/profile" && !isSignedIn) return null;
 
         return (
-          <SheetClose asChild key={item.route}>
+          <SheetClose asChild key={item.label}>
             <Link
-              href={item.route}
+              href={route}
               className={`${
                 isActive
                   ? "primary-gradient rounded-lg text-light-900"
