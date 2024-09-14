@@ -37,7 +37,24 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const parsedQuestionDetails = JSON.parse(questionDetails || "");
+  let parsedQuestionDetails: {
+    tags: any;
+    title?: any;
+    content?: any;
+    _id?: any;
+  };
+
+  try {
+    // Check if questionDetails is defined and not empty before parsing
+    if (questionDetails) {
+      parsedQuestionDetails = JSON.parse(questionDetails);
+    } else {
+      parsedQuestionDetails = { tags: [] }; // Default value if questionDetails is empty
+    }
+  } catch (error) {
+    console.error("Failed to parse questionDetails:", error);
+    parsedQuestionDetails = { tags: [] }; // Default value in case of parsing error
+  }
 
   const groupedTags = parsedQuestionDetails.tags.map(
     (tag: { name: any }) => tag.name
