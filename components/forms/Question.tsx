@@ -37,26 +37,10 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  let parsedQuestionDetails: {
-    tags: any;
-    title?: any;
-    content?: any;
-    _id?: any;
-  };
+  const parsedQuestionDetails =
+    questionDetails && JSON.parse(questionDetails || "");
 
-  try {
-    // Check if questionDetails is defined and not empty before parsing
-    if (questionDetails) {
-      parsedQuestionDetails = JSON.parse(questionDetails);
-    } else {
-      parsedQuestionDetails = { tags: [] }; // Default value if questionDetails is empty
-    }
-  } catch (error) {
-    console.error("Failed to parse questionDetails:", error);
-    parsedQuestionDetails = { tags: [] }; // Default value in case of parsing error
-  }
-
-  const groupedTags = parsedQuestionDetails.tags.map(
+  const groupedTags = parsedQuestionDetails?.tags.map(
     (tag: { name: any }) => tag.name
   );
 
@@ -64,8 +48,8 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
   const form = useForm<z.infer<typeof QuestionsSchema>>({
     resolver: zodResolver(QuestionsSchema),
     defaultValues: {
-      title: parsedQuestionDetails.title || "",
-      explanation: parsedQuestionDetails.content || "",
+      title: parsedQuestionDetails?.title || "",
+      explanation: parsedQuestionDetails?.content || "",
       tags: groupedTags || [],
     },
   });
@@ -183,7 +167,7 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
                   }}
                   onBlur={field.onBlur}
                   onEditorChange={(content) => field.onChange(content)}
-                  initialValue={parsedQuestionDetails.content || ""}
+                  initialValue={parsedQuestionDetails?.content || ""}
                   init={{
                     height: 350,
                     menubar: false,
