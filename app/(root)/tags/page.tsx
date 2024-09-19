@@ -1,6 +1,6 @@
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import Filter from "@/components/shared/Filter";
-import { UserFilters } from "@/constants/filters";
+import { TagFilters } from "@/constants/filters";
 import Link from "next/link";
 import NoResult from "@/components/shared/NoResult";
 import { getAllTags } from "@/lib/actions/tag.action";
@@ -9,6 +9,7 @@ import { SearchParamsProps } from "@/types";
 const Page = async ({ searchParams }: SearchParamsProps) => {
   const result = await getAllTags({
     searchQuery: searchParams.q,
+    filter: searchParams.filter,
   });
 
   return (
@@ -25,7 +26,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
         />
 
         <Filter
-          filters={UserFilters}
+          filters={TagFilters}
           otherClasses="min-h-[56px] sm:min-w-[170px]"
         />
       </div>
