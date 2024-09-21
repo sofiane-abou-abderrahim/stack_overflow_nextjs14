@@ -7,12 +7,14 @@ import { getUserInfo } from "@/lib/actions/user.action";
 import { SignedIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsContent } from "@/components/ui/tabs";
+
 import { getJoinedDate } from "@/lib/utils";
 import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
 import QuestionsTab from "@/components/shared/QuestionsTab";
 import AnswersTab from "@/components/shared/AnswersTab";
+import TabsClient from "@/components/shared/TabsClient";
 
 const Page = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = auth();
@@ -87,16 +89,11 @@ const Page = async ({ params, searchParams }: URLProps) => {
       />
 
       <div className="mt-10 flex gap-10">
-        <Tabs defaultValue="top-posts" className="flex-1">
-          <TabsList className="background-light800_dark400 min-h-[42px] p-1">
-            <TabsTrigger value="top-posts" className="tab">
-              Top Posts
-            </TabsTrigger>
-            <TabsTrigger value="answers" className="tab">
-              Answers
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="top-posts">
+        <TabsClient defaultValue="top-posts" className="flex-1">
+          <TabsContent
+            value="top-posts"
+            className="mt-5 flex w-full flex-col gap-6"
+          >
             <QuestionsTab
               searchParams={searchParams}
               userId={userInfo.user._id}
@@ -110,7 +107,7 @@ const Page = async ({ params, searchParams }: URLProps) => {
               clerkId={clerkId}
             />
           </TabsContent>
-        </Tabs>
+        </TabsClient>
       </div>
     </>
   );
