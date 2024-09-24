@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { HomePageFilters } from "@/constants/filters";
 import { Button } from "../ui/button";
-import { formUrlQuery } from "@/lib/utils";
+import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 
 const HomeFilters = () => {
   const searchParams = useSearchParams();
@@ -14,11 +14,16 @@ const HomeFilters = () => {
   const [active, setActive] = useState("");
 
   const handleTypeClick = (item: string) => {
+    const newParams = removeKeysFromQuery({
+      params: searchParams.toString(),
+      keysToRemove: ["filter", "page"], // Remove the "filter" and "page" keys first
+    });
+
     if (active === item) {
       setActive("");
-
+      // Push the URL without the current filter
       const newUrl = formUrlQuery({
-        params: searchParams.toString(),
+        params: newParams,
         key: "filter",
         value: null,
       });
@@ -26,9 +31,9 @@ const HomeFilters = () => {
       router.push(newUrl, { scroll: false });
     } else {
       setActive(item);
-
+      // Add the selected filter to the URL
       const newUrl = formUrlQuery({
-        params: searchParams.toString(),
+        params: newParams,
         key: "filter",
         value: item.toLowerCase(),
       });
@@ -37,12 +42,17 @@ const HomeFilters = () => {
     }
   };
 
+  useEffect(() => {
+    // Update the 'active' state on filter change or when getting back to the homepage
+    const currentFilter = searchParams.get("filter") || "";
+    setActive(currentFilter);
+  }, [searchParams]);
+
   return (
     <div className="mt-10 hidden flex-wrap gap-3 md:flex">
       {HomePageFilters.map((item) => (
         <Button
           key={item.value}
-          onClick={() => {}}
           className={`body-medium rounded-lg px-6 py-3 capitalize shadow-none ${
             active === item.value
               ? "bg-primary-100 text-primary-500"
