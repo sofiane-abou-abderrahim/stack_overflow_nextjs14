@@ -74,7 +74,6 @@ interface UrlQueryParams {
 export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {
   const currentUrl = qs.parse(params);
 
-  // Update the key with the new value
   currentUrl[key] = value;
 
   // Retrieve the pathname without adding extra characters
