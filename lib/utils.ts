@@ -74,15 +74,30 @@ interface UrlQueryParams {
 export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {
   const currentUrl = qs.parse(params);
 
+  // Update the key with the new value
   currentUrl[key] = value;
 
-  return qs.stringifyUrl(
+  // Retrieve the pathname without adding extra characters
+  const cleanPathname = window.location.pathname.replace(/\/+$/, "");
+
+  // Generate the URL
+  let finalUrl = qs.stringifyUrl(
     {
-      url: window.location.pathname,
+      url: cleanPathname || "/", // Use "/" if the pathname is empty
       query: currentUrl,
     },
     { skipNull: true }
   );
+
+  // Clean up any superfluous '/?' or '//' characters in the final URL
+  finalUrl = decodeURIComponent(
+    finalUrl
+      .replace(/\/\?$/, "")
+      .replace(/\/\?/, "?")
+      .replace(/\/{2,}/g, "/")
+  );
+
+  return finalUrl;
 };
 
 interface RemoveUrlQueryParams {
@@ -96,15 +111,30 @@ export const removeKeysFromQuery = ({
 }: RemoveUrlQueryParams) => {
   const currentUrl = qs.parse(params);
 
+  // Remove the specified keys from the URL
   keysToRemove.forEach((key) => {
     delete currentUrl[key];
   });
 
-  return qs.stringifyUrl(
+  // Retrieve the pathname without adding extra characters
+  const cleanPathname = window.location.pathname.replace(/\/+$/, "");
+
+  // Generate the URL
+  let finalUrl = qs.stringifyUrl(
     {
-      url: window.location.pathname,
+      url: cleanPathname || "/", // Use "/" if the pathname is empty
       query: currentUrl,
     },
     { skipNull: true }
   );
+
+  // Clean up any superfluous '/?' or '//' characters in the final URL
+  finalUrl = decodeURIComponent(
+    finalUrl
+      .replace(/\/\?$/, "")
+      .replace(/\/\?/, "?")
+      .replace(/\/{2,}/g, "/")
+  );
+
+  return finalUrl;
 };
