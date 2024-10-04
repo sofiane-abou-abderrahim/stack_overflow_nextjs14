@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { HomePageFilters } from "@/constants/filters";
@@ -49,6 +49,11 @@ const HomeFilters = () => {
       router.push(newUrl, { scroll: false });
     }
   };
+
+  useEffect(() => {
+    const currentFilter = searchParams.get("filter") || "";
+    setActive(currentFilter);
+  }, [searchParams]);
 
   return (
     <div className="mt-10 hidden flex-wrap gap-3 md:flex">
