@@ -14,25 +14,38 @@ const HomeFilters = () => {
   const [active, setActive] = useState("");
 
   const handleTypeClick = (item: string) => {
+    // Create a URLSearchParams object from the current query parameters
+    const currentParams = new URLSearchParams(searchParams.toString());
+
+    // Remove the "filter" and "page" keys if they exist
+    currentParams.delete("filter");
+    currentParams.delete("page");
+
     if (active === item) {
       setActive("");
 
+      // Build the URL without the current filter
       const newUrl = formUrlQuery({
-        params: searchParams.toString(),
+        params: currentParams.toString(),
         key: "filter",
         value: null,
       });
 
+      // Push the new URL to the router
       router.push(newUrl, { scroll: false });
     } else {
       setActive(item);
 
+      // Add the selected filter to the query parameters
+      currentParams.set("filter", item.toLowerCase());
+
       const newUrl = formUrlQuery({
-        params: searchParams.toString(),
+        params: currentParams.toString(),
         key: "filter",
         value: item.toLowerCase(),
       });
 
+      // Push the updated URL to the router
       router.push(newUrl, { scroll: false });
     }
   };
