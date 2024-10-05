@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tabs, TabsList, TabsTrigger } from '../ui/tabs'
 import { useRouter } from 'next/navigation';
 import { removeKeysFromQuery } from '@/lib/utils';
@@ -9,7 +9,7 @@ const TabsClient = ({defaultValue, className, children }: { defaultValue: string
 
     const router = useRouter();
 
-    const [tabValue, setTabValue] = React.useState("top-posts");
+    const [tabValue, setTabValue] = useState("top-posts");
 
     useEffect(() => {
         const newUrl = removeKeysFromQuery({

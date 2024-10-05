@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter, useSearchParams } from "next/navigation";
 
 import {
@@ -27,8 +28,15 @@ const Filter = ({ filters, otherClasses, containerClasses }: Props) => {
   const paramFilter = searchParams.get("filter");
 
   const handleUpdateParams = (value: string) => {
+    // Create a URLSearchParams object from the current query parameters
+    const currentParams = new URLSearchParams(searchParams.toString());
+
+    // Remove the "filter" and "page" keys if they exist
+    currentParams.delete("filter");
+    currentParams.delete("page");
+
     const newUrl = formUrlQuery({
-      params: searchParams.toString(),
+      params: currentParams.toString(),
       key: "filter",
       value,
     });
