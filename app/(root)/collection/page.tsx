@@ -87,6 +87,7 @@ export default async function Page({ searchParams }: SearchParamsProps) {
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
           isNext={result.isNext}
+          totalResults={result.questions.length}
         />
       </div>
     </>

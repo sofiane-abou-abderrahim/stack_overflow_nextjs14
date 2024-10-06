@@ -7,9 +7,10 @@ import { Button } from "../ui/button";
 interface Props {
   pageNumber: number;
   isNext: boolean;
+  totalResults?: number;
 }
 
-const Pagination = ({ pageNumber, isNext }: Props) => {
+const Pagination = ({ pageNumber, isNext, totalResults }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -26,7 +27,8 @@ const Pagination = ({ pageNumber, isNext }: Props) => {
     router.push(newUrl);
   };
 
-  if (!isNext && pageNumber === 1) return null;
+  // Hide pagination if no results or only one page is needed
+  if (totalResults === 0 || (!isNext && pageNumber === 1)) return null;
 
   return (
     <div className="flex w-full items-center justify-center gap-2">

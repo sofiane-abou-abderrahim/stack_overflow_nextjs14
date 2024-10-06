@@ -74,6 +74,7 @@ const Page = async ({ params, searchParams }: URLProps) => {
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
           isNext={result.isNext}
+          totalResults={result.questions.length}
         />
       </div>
     </>
