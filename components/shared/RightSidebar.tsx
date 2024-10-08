@@ -21,8 +21,10 @@ const RightSidebar = async () => {
               key={question._id}
               className="flex cursor-pointer items-center justify-between gap-7"
             >
-              <p className="body-medium text-dark500_light700">
-                {question.title}
+              <p className="body-medium text-dark500_light700 line-clamp-2">
+              {question.title.length > 100
+                  ? `${question.title.slice(0, 100)}...`
+                  : question.title}
               </p>
               <Image
                 src="/assets/icons/chevron-right.svg"
