@@ -43,7 +43,9 @@ const AnswerCard = ({
             {getTimestamp(createdAt)}
           </span>
           <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
-            {question.title}
+            {question.title.length > 100
+              ? `${question.title.slice(0, 100)}...`
+              : question.title}
           </h3>
         </div>
 
