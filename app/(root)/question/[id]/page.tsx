@@ -23,7 +23,7 @@ const Page = async ({ params, searchParams }: any) => {
     mongoUser = await getUserById({ userId: clerkId });
   }
 
-  console.log(mongoUser);
+  // console.log(mongoUser);
 
   const result = await getQuestionById({ questionId: params.id });
 
