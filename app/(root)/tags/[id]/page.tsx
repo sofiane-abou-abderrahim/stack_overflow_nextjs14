@@ -4,6 +4,7 @@ import Pagination from "@/components/shared/Pagination";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { getQuestionsByTagId } from "@/lib/actions/tag.action";
 import { URLProps } from "@/types";
+// import Loading from "./loading";
 
 interface QuestionType {
   _id: string;
@@ -30,6 +31,9 @@ const Page = async ({ params, searchParams }: URLProps) => {
     page: searchParams.page ? +searchParams.page : 1,
     searchQuery: searchParams.q,
   });
+
+  // const isLoading = true;
+  // if (isLoading) return <Loading />;
 
   return (
     <>

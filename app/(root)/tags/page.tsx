@@ -6,6 +6,7 @@ import NoResult from "@/components/shared/NoResult";
 import { getAllTags } from "@/lib/actions/tag.action";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
+// import Loading from "./loading";
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
   const result = await getAllTags({
@@ -13,6 +14,9 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
   });
+
+  // const isLoading = true;
+  // if (isLoading) return <Loading />;
 
   return (
     <>

@@ -7,6 +7,7 @@ import { QuestionFilters } from "@/constants/filters";
 import { getSavedQuestions } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs/server";
+// import Loading from "./loading";
 
 interface QuestionType {
   _id: string;
@@ -38,6 +39,9 @@ export default async function Page({ searchParams }: SearchParamsProps) {
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
   });
+
+  // const isLoading = true;
+  // if (isLoading) return <Loading />;
 
   return (
     <>
