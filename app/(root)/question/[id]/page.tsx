@@ -15,15 +15,12 @@ import Votes from "@/components/shared/Votes";
 
 const Page = async ({ params, searchParams }: any) => {
   const { userId: clerkId } = auth();
-  console.log(clerkId);
 
   let mongoUser;
 
   if (clerkId) {
     mongoUser = await getUserById({ userId: clerkId });
   }
-
-  // console.log(mongoUser);
 
   const result = await getQuestionById({ questionId: params.id });
 
