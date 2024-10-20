@@ -13,21 +13,29 @@ export async function viewQuestion(params: ViewQuestionParams) {
 
     // Update view count for the question
     await Question.findByIdAndUpdate(questionId, { $inc: { views: 1 } });
-
     if (userId) {
       const existingInteraction = await Interaction.findOne({
         user: userId,
         action: "view",
         question: questionId,
       });
+      if (existingInteraction) {
+        return;
+      }
 
-      if (existingInteraction) return console.log("User has already viewed.");
-
+      //  Update view count for question we're viewing
+      const question = await Question.findById(questionId);
+      console.log(question);
+      if (!question) {
+        console.log("Question not found");
+        return;
+      }
       // Create interaction
       await Interaction.create({
         user: userId,
         action: "view",
         question: questionId,
+        tags: question.tags,
       });
     }
   } catch (error) {
