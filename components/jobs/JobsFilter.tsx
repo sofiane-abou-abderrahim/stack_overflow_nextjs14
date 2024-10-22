@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 import LocalSearchbar from "../shared/search/LocalSearchbar";
@@ -10,7 +12,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const JobsFilter = () => {
+import { Country } from "@/types";
+
+interface JobsFilterProps {
+  countriesList: Country[];
+}
+
+const JobsFilter = ({ countriesList }: JobsFilterProps) => {
   const handleUpdateParams = (value: string) => {
     console.log(value);
   };
@@ -40,24 +48,19 @@ const JobsFilter = () => {
 
         <SelectContent className="body-semibold text-dark500_light700 small-regular max-h-[350px] max-w-[250px] border-none bg-light-900 dark:bg-dark-300">
           <SelectGroup>
-            <SelectItem
-              className="cursor-pointer focus:bg-light-800 dark:focus:bg-dark-400"
-              value="France"
-            >
-              France
-            </SelectItem>
-            <SelectItem
-              className="cursor-pointer focus:bg-light-800 dark:focus:bg-dark-400"
-              value="England"
-            >
-              England
-            </SelectItem>
-            <SelectItem
-              className="cursor-pointer focus:bg-light-800 dark:focus:bg-dark-400"
-              value="USA"
-            >
-              United States
-            </SelectItem>
+            {countriesList ? (
+              countriesList.map((country: Country) => (
+                <SelectItem
+                  key={country.name.common}
+                  value={country.name.common}
+                  className="cursor-pointer focus:bg-light-800 dark:focus:bg-dark-400"
+                >
+                  {country.name.common}
+                </SelectItem>
+              ))
+            ) : (
+              <SelectItem value="No results found">No results found</SelectItem>
+            )}
           </SelectGroup>
         </SelectContent>
       </Select>
