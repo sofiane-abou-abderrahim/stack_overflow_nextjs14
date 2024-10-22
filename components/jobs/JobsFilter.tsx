@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import LocalSearchbar from "../shared/search/LocalSearchbar";
 import {
@@ -13,20 +14,31 @@ import {
 } from "@/components/ui/select";
 
 import { Country } from "@/types";
+import { formUrlQuery } from "@/lib/utils";
 
 interface JobsFilterProps {
   countriesList: Country[];
 }
 
 const JobsFilter = ({ countriesList }: JobsFilterProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const handleUpdateParams = (value: string) => {
-    console.log(value);
+    const newUrl = formUrlQuery({
+      params: searchParams.toString(),
+      key: "location",
+      value,
+    });
+
+    router.push(newUrl, { scroll: false });
   };
 
   return (
     <div className="relative mt-11 flex w-full justify-between gap-5 max-sm:flex-col sm:items-center">
       <LocalSearchbar
-        route="/jobs"
+        route={pathname}
         iconPosition="left"
         imgSrc="/assets/icons/job-search.svg"
         placeholder="Job Title, Company, or Keywords"
