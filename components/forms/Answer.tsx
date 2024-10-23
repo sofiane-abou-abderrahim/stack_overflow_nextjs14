@@ -27,12 +27,14 @@ interface Props {
 }
 
 const Answer = ({ question, questionId, authorId }: Props) => {
-  const pathname = usePathname();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmittingAI, setSetIsSubmittingAI] = useState(false);
-
   const { mode } = useTheme();
   const editorRef = useRef(null);
+  const pathname = usePathname();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmittingAI, setSetIsSubmittingAI] = useState(false);
+  const [editorValue, setEditorValue] = useState("");
+
   const form = useForm<z.infer<typeof AnswerSchema>>({
     resolver: zodResolver(AnswerSchema),
     defaultValues: {
@@ -52,10 +54,10 @@ const Answer = ({ question, questionId, authorId }: Props) => {
       });
 
       form.reset();
+      setEditorValue("");
 
       if (editorRef.current) {
         const editor = editorRef.current as any;
-
         editor.setContent("");
       }
     } catch (error) {
@@ -90,6 +92,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
       if (editorRef.current) {
         const editor = editorRef.current as any;
         editor.setContent(formattedAnswer);
+        setEditorValue(formattedAnswer);
       }
 
       // Toast...
@@ -147,7 +150,11 @@ const Answer = ({ question, questionId, authorId }: Props) => {
                       editorRef.current = editor;
                     }}
                     onBlur={field.onBlur}
-                    onEditorChange={(content) => field.onChange(content)}
+                    onEditorChange={(content) => {
+                      field.onChange(content);
+                      setEditorValue(content);
+                    }}
+                    value={editorValue}
                     init={{
                       height: 350,
                       menubar: false,
@@ -167,11 +174,14 @@ const Answer = ({ question, questionId, authorId }: Props) => {
                         "insertdatetime",
                         "media",
                         "table",
+                        "help",
                       ],
                       toolbar:
-                        "undo redo | " +
-                        "codesample | bold italic forecolor | alignleft aligncenter |" +
-                        "alignright alignjustify | bullist numlist",
+                        "undo redo | blocks | " +
+                        "codesample | " +
+                        "bold italic forecolor | alignleft aligncenter " +
+                        "alignright alignjustify | bullist numlist outdent indent | " +
+                        "removeformat | help",
                       content_style:
                         "body { font-family:Inter; font-size:16px }",
                       skin: mode === "dark" ? "oxide-dark" : "oxide",
