@@ -19,6 +19,7 @@ import { useTheme } from "@/context/ThemeProvider";
 import { Button } from "../ui/button";
 import { createAnswer } from "@/lib/actions/answer.action";
 import { usePathname } from "next/navigation";
+import { toast } from "../hooks/use-toast";
 
 interface Props {
   question: string;
@@ -43,6 +44,13 @@ const Answer = ({ question, questionId, authorId }: Props) => {
   });
 
   const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
+    if (!authorId) {
+      return toast({
+        title: "Please log in",
+        description: "You must be logged in to perform this action",
+      });
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -51,6 +59,11 @@ const Answer = ({ question, questionId, authorId }: Props) => {
         author: JSON.parse(authorId),
         question: JSON.parse(questionId),
         path: pathname,
+      });
+
+      toast({
+        title: "Answer Successful",
+        description: "You have successfully answered the question",
       });
 
       form.reset();
@@ -68,7 +81,12 @@ const Answer = ({ question, questionId, authorId }: Props) => {
   };
 
   const generateAIAnswer = async () => {
-    if (!authorId) return;
+    if (!authorId) {
+      return toast({
+        title: "Please log in",
+        description: "You must be logged in to perform this action",
+      });
+    }
 
     setSetIsSubmittingAI(true);
 
@@ -95,7 +113,10 @@ const Answer = ({ question, questionId, authorId }: Props) => {
         setEditorValue(formattedAnswer);
       }
 
-      // Toast...
+      toast({
+        title: "AI Answer Successful",
+        description: "You have successfully generated an AI answer",
+      });
     } catch (error) {
       console.log(error);
     } finally {

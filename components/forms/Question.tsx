@@ -23,6 +23,7 @@ import { Badge } from "../ui/badge";
 import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "@/context/ThemeProvider";
+import { toast } from "../hooks/use-toast";
 
 interface Props {
   type?: string;
@@ -72,6 +73,11 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
           path: pathname,
         });
 
+        toast({
+          title: "Update Question Successful",
+          description: "You have successfully updated your question",
+        });
+
         router.push(`/question/${parsedQuestionDetails._id}`);
       } else {
         await createQuestion({
@@ -80,6 +86,11 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
           tags: values.tags,
           author: JSON.parse(mongoUserId),
           path: pathname,
+        });
+
+        toast({
+          title: "Ask Question Successful",
+          description: "You have successfully asked your question",
         });
 
         router.push("/");
@@ -113,6 +124,11 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
           tagInput.value = "";
           form.clearErrors("tags");
         }
+
+        return toast({
+          title: "Add Tag Successful",
+          description: "You have successfully added your tag",
+        });
       } else {
         form.trigger();
       }
@@ -123,6 +139,11 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
     const newTags = field.value.filter((t: string) => t !== tag);
 
     form.setValue("tags", newTags);
+
+    return toast({
+      title: "Remove Tag Successful",
+      description: "You have successfully removed your tag",
+    });
   };
 
   return (
